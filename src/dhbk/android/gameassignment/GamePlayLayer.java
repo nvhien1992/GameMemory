@@ -19,7 +19,6 @@ import org.cocos2d.types.CGPoint;
 import org.cocos2d.types.CGSize;
 import org.cocos2d.types.ccColor3B;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
