@@ -6,6 +6,7 @@ import org.cocos2d.opengl.CCGLSurfaceView;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,18 +14,23 @@ import android.view.WindowManager;
 public class MainActivity extends ActionBarActivity {
 	public static boolean MUSIC;
 	public static boolean AUDIO;	
-	public static String LEVEL;
+	public static String DIFFICULT;
 	public static String[] HIGH_SCORES = {"", "", "", "", "", ""};
-	
+	public static boolean WIN;
+	public static int SUB_LEVEL;
+	public static int SCORES;
+		
 	protected CCGLSurfaceView _glSurfaceView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		MUSIC = true;
+		MUSIC = false;
 		AUDIO = true;
-		LEVEL = "easy";
-
+		DIFFICULT = "easy";
+		SUB_LEVEL = 1;
+		SCORES = 0;
+		
 	    requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	    getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -78,6 +84,11 @@ public class MainActivity extends ActionBarActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    return CCDirector.sharedDirector().onKeyDown(event);
 	}
 	
 }
