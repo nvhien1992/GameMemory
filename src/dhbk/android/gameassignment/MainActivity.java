@@ -17,7 +17,7 @@ public class MainActivity extends ActionBarActivity {
 	public static String DIFFICULT;
 	public static String[] HIGH_SCORES = {"", "", "", "", "", ""};
 	public static boolean WIN;
-	public static int SUB_LEVEL;
+	public static int LEVEL;
 	public static int SCORES;
 		
 	protected CCGLSurfaceView _glSurfaceView;
@@ -26,9 +26,9 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MUSIC = false;
-		AUDIO = true;
-		DIFFICULT = "easy";
-		SUB_LEVEL = 1;
+		AUDIO = false;
+		DIFFICULT = "hard";
+		LEVEL = 1;
 		SCORES = 0;
 		
 	    requestWindowFeature(Window.FEATURE_NO_TITLE);

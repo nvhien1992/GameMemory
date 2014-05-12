@@ -19,6 +19,9 @@ public class MainMenuLayer extends CCLayer {
 	public static Context context = CCDirector.sharedDirector().getActivity();
 	private static CGSize screenSize;
 	private static float scaleFactor;
+	private static float bottomObj;
+	private static CCSprite buttonPlay2;
+	private static CCMenuItemImage buttonOptions;
 	
 	protected MainMenuLayer() {
 		this.setIsKeyEnabled(true);
@@ -42,7 +45,7 @@ public class MainMenuLayer extends CCLayer {
 		gameName.setScale(1f*scaleFactor);
 		addChild(gameName);
 		
-		float bottomObj = gameName.getContentSize().height + 50*scaleFactor;
+		bottomObj = gameName.getContentSize().height + 50*scaleFactor;
 		
 		/*< Buttons >*/
 		/* Play */
@@ -55,12 +58,17 @@ public class MainMenuLayer extends CCLayer {
 		buttonPlayMenu.setPosition(CGPoint.ccp(screenSize.width/2, screenSize.height - bottomObj - 60*scaleFactor));
 		addChild(buttonPlayMenu);
 		
+		buttonPlay2 = CCSprite.sprite("button/buttonPlay2.png");
+		buttonPlay2.setScale(1f *scaleFactor); 
+		buttonPlay2.setAnchorPoint(CGPoint.ccp(0.5f, 1f));
+		buttonPlay2.setPosition(CGPoint.ccp(screenSize.width/2, screenSize.height - bottomObj - 60*scaleFactor));
+		
 		float buttonHeight = buttonPlay.getContentSize().height*scaleFactor;
 		
 		bottomObj += buttonHeight + 60*scaleFactor;
 		
 		/* Options */
-		CCMenuItemImage buttonOptions = CCMenuItemImage.item("button/buttonOptions.png", "button/buttonOptions.png", this, "buttonOptionsCallBack");
+		buttonOptions = CCMenuItemImage.item("button/buttonOptions.png", "button/buttonOptions.png", this, "buttonOptionsCallBack");
 		buttonOptions.setScale(1f *scaleFactor); 
 		buttonOptions.setAnchorPoint(CGPoint.ccp(0.5f, 1f));
 		
@@ -113,6 +121,7 @@ public class MainMenuLayer extends CCLayer {
 	public void buttonPlayCallBack(Object sender) {
 		if(MainActivity.AUDIO)
 			SoundEngine.sharedEngine().playEffect(context, R.raw.click);
+//		addChild(buttonPlay2);
 		CCScene scene = GamePlayLayer.scene();
 		CCDirector.sharedDirector().runWithScene(scene);
 	}

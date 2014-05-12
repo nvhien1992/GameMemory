@@ -50,30 +50,9 @@ public class GamePlayLayer extends CCLayer {
 		// TODO Auto-generated constructor stub
 		this.setIsKeyEnabled(true);
 		this.setIsTouchEnabled(true);
+							
+		initGlobVar();
 		
-		checkToWin = 0;
-		combo = 0;
-		checks = 0;
-		MainActivity.SCORES = 0;
-		flagCombo = false;
-		if(MainActivity.SUB_LEVEL == 1)
-			numOfPic = 4;
-		screenSize = CCDirector.sharedDirector().winSize();
-		
-		backgroundArr = new String[11];
-		
-		rowColChecked = new int[2][2];
-		rowColChecked[0][0] = -1;
-		rowColChecked[0][1] = -1;
-		rowColChecked[1][0] = -2;
-		rowColChecked[1][1] = -2;
-		
-		if(MainActivity.DIFFICULT.equals("easy"))
-			time_s = 120;
-		else if(MainActivity.DIFFICULT.equals("medium"))
-			time_s = 90;
-		else time_s = 60;
-								
 		/*< Progress bar >*/
 		progressBarBG = CCProgressTimer.progress("progressBarBG.png");
 		progBarScaleX = screenSize.width/progressBarBG.getContentSize().width;
@@ -204,6 +183,36 @@ public class GamePlayLayer extends CCLayer {
 		start = true;
 		this.removeChild(buttonResumeMenu, true);
 		this.addChild(buttonPauseMenu);
+	}
+	
+	public void initGlobVar() {
+		checkToWin = 0;
+		combo = 0;
+		checks = 0;
+		MainActivity.SCORES = 0;
+		flagCombo = false;
+		if(MainActivity.LEVEL == 1)
+			numOfPic = 4;
+		else if(MainActivity.LEVEL == 2)
+			numOfPic = 6;
+		else if(MainActivity.LEVEL == 3)
+			numOfPic = 8;
+		
+		screenSize = CCDirector.sharedDirector().winSize();
+		
+		backgroundArr = new String[11];
+		
+		rowColChecked = new int[2][2];
+		rowColChecked[0][0] = -1;
+		rowColChecked[0][1] = -1;
+		rowColChecked[1][0] = -2;
+		rowColChecked[1][1] = -2;
+		
+		if(MainActivity.DIFFICULT.equals("easy"))
+			time_s = 120;
+		else if(MainActivity.DIFFICULT.equals("medium"))
+			time_s = 90;
+		else time_s = 60;
 	}
 	
 	public void randomBackgroundPic() {
@@ -416,9 +425,14 @@ public class GamePlayLayer extends CCLayer {
 			flagCombo = true;
 			checkToWin += 2;
 			if(checkToWin == numOfElement) {
+				MainActivity.LEVEL++;
 				this.setIsTouchEnabled(true);
-				MainActivity.WIN = true;
-				CCScene scene = GameOverLayer.scene();
+				if(MainActivity.LEVEL > 3) {
+					MainActivity.WIN = true;
+					CCScene scene = GameOverLayer.scene();
+					CCDirector.sharedDirector().replaceScene(scene);
+				}
+				CCScene scene = GamePlayLayer.scene();
 				CCDirector.sharedDirector().replaceScene(scene);
 			}
 		}else {
@@ -457,6 +471,7 @@ public class GamePlayLayer extends CCLayer {
 			
 			if(percentage == 100) {
 				MainActivity.WIN = false;
+				MainActivity.LEVEL = 1;
 				percentage = 0;
 				CCScene scene = GameOverLayer.scene();
 				CCDirector.sharedDirector().replaceScene(scene);

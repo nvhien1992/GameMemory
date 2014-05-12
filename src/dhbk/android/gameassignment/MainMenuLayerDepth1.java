@@ -188,12 +188,6 @@ public class MainMenuLayerDepth1 extends CCLayer{
 		CCScene scene = CCScene.node();
 		CCLayer layer = new MainMenuLayerDepth1();
 		scene.addChild(layer);
-//		File f = new File(Environment.getExternalStorageDirectory().getPath() + "/memory/" + "highScores.txt");
-//		f.delete();
-//		f.mkdirs();
-		writeScoresFile("hien", "6969");
-		writeScoresFile("nvh", "6600");
-		writeScoresFile("nvhien", "6000");
 		
 		/*< Clear >*/
 		CCMenuItemImage buttonClear = CCMenuItemImage.item("button/buttonClear.png", "button/buttonClear.png", layer, "buttonClearCallBack");
@@ -208,29 +202,29 @@ public class MainMenuLayerDepth1 extends CCLayer{
 		/*< MainMenu >*/
 		scene.addChild(buttonBackMainMenu(layer, 50*scaleFactor));
 		
-		readScoresFile();
-		
-		if(!MainActivity.HIGH_SCORES[0].equals("") && !MainActivity.HIGH_SCORES[1].equals("")) {
-			CCLabel player1 = CCLabel.makeLabel("1. " + MainActivity.HIGH_SCORES[0], "HeadingFont.ttf", 24);
-			CCLabel score1 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[1], "HeadingFont.ttf", 24);
-			highScoresView(player1, score1, screenSize.height - 60*scaleFactor);
-			scene.addChild(player1);
-			scene.addChild(score1);
-		}
-		if(!MainActivity.HIGH_SCORES[2].equals("") && !MainActivity.HIGH_SCORES[2].equals("")) {
-			CCLabel player2 = CCLabel.makeLabel("2. " + MainActivity.HIGH_SCORES[2], "HeadingFont.ttf", 24);
-			CCLabel score2 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[3], "HeadingFont.ttf", 24);
-			highScoresView(player2, score2, screenSize.height - 100*scaleFactor);
-			scene.addChild(player2);
-			scene.addChild(score2);
-		}
-		if(!MainActivity.HIGH_SCORES[4].equals("") && !MainActivity.HIGH_SCORES[5].equals("")) {
-			CCLabel player3 = CCLabel.makeLabel("3. " + MainActivity.HIGH_SCORES[4], "HeadingFont.ttf", 24);
-			CCLabel score3 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[5], "HeadingFont.ttf", 24);
-			highScoresView(player3, score3, screenSize.height - 140*scaleFactor);
-			scene.addChild(player3);
-			scene.addChild(score3);
-		}
+//		readScoresFile();
+//		
+//		if(!MainActivity.HIGH_SCORES[0].equals("") && !MainActivity.HIGH_SCORES[1].equals("")) {
+//			CCLabel player1 = CCLabel.makeLabel("1. " + MainActivity.HIGH_SCORES[0], "HeadingFont.ttf", 24);
+//			CCLabel score1 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[1], "HeadingFont.ttf", 24);
+//			highScoresView(player1, score1, screenSize.height - 60*scaleFactor);
+//			scene.addChild(player1);
+//			scene.addChild(score1);
+//		}
+//		if(!MainActivity.HIGH_SCORES[2].equals("") && !MainActivity.HIGH_SCORES[2].equals("")) {
+//			CCLabel player2 = CCLabel.makeLabel("2. " + MainActivity.HIGH_SCORES[2], "HeadingFont.ttf", 24);
+//			CCLabel score2 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[3], "HeadingFont.ttf", 24);
+//			highScoresView(player2, score2, screenSize.height - 100*scaleFactor);
+//			scene.addChild(player2);
+//			scene.addChild(score2);
+//		}
+//		if(!MainActivity.HIGH_SCORES[4].equals("") && !MainActivity.HIGH_SCORES[5].equals("")) {
+//			CCLabel player3 = CCLabel.makeLabel("3. " + MainActivity.HIGH_SCORES[4], "HeadingFont.ttf", 24);
+//			CCLabel score3 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[5], "HeadingFont.ttf", 24);
+//			highScoresView(player3, score3, screenSize.height - 140*scaleFactor);
+//			scene.addChild(player3);
+//			scene.addChild(score3);
+//		}
 				
 		return scene;
 	}
