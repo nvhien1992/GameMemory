@@ -15,7 +15,7 @@ public class MainActivity extends ActionBarActivity {
 	public static boolean MUSIC;
 	public static boolean AUDIO;	
 	public static String DIFFICULT;
-	public static String[] HIGH_SCORES = {"", "", "", "", "", ""};
+	public static String[] HIGH_SCORES = {"0", "0", "0"};
 	public static boolean WIN;
 	public static int LEVEL;
 	public static int SCORES;
@@ -26,8 +26,8 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		MUSIC = false;
-		AUDIO = false;
-		DIFFICULT = "hard";
+		AUDIO = true;
+		DIFFICULT = "medium";
 		LEVEL = 1;
 		SCORES = 0;
 		

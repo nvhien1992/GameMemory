@@ -1,14 +1,12 @@
 package dhbk.android.gameassignment;
 
 import android.os.Environment;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import org.cocos2d.layers.CCLayer;
@@ -202,58 +200,46 @@ public class MainMenuLayerDepth1 extends CCLayer{
 		/*< MainMenu >*/
 		scene.addChild(buttonBackMainMenu(layer, 50*scaleFactor));
 		
-//		readScoresFile();
-//		
-//		if(!MainActivity.HIGH_SCORES[0].equals("") && !MainActivity.HIGH_SCORES[1].equals("")) {
-//			CCLabel player1 = CCLabel.makeLabel("1. " + MainActivity.HIGH_SCORES[0], "HeadingFont.ttf", 24);
-//			CCLabel score1 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[1], "HeadingFont.ttf", 24);
-//			highScoresView(player1, score1, screenSize.height - 60*scaleFactor);
-//			scene.addChild(player1);
-//			scene.addChild(score1);
-//		}
-//		if(!MainActivity.HIGH_SCORES[2].equals("") && !MainActivity.HIGH_SCORES[2].equals("")) {
-//			CCLabel player2 = CCLabel.makeLabel("2. " + MainActivity.HIGH_SCORES[2], "HeadingFont.ttf", 24);
-//			CCLabel score2 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[3], "HeadingFont.ttf", 24);
-//			highScoresView(player2, score2, screenSize.height - 100*scaleFactor);
-//			scene.addChild(player2);
-//			scene.addChild(score2);
-//		}
-//		if(!MainActivity.HIGH_SCORES[4].equals("") && !MainActivity.HIGH_SCORES[5].equals("")) {
-//			CCLabel player3 = CCLabel.makeLabel("3. " + MainActivity.HIGH_SCORES[4], "HeadingFont.ttf", 24);
-//			CCLabel score3 = CCLabel.makeLabel(MainActivity.HIGH_SCORES[5], "HeadingFont.ttf", 24);
-//			highScoresView(player3, score3, screenSize.height - 140*scaleFactor);
-//			scene.addChild(player3);
-//			scene.addChild(score3);
-//		}
+		readScoresFile();
+		
+		if(!MainActivity.HIGH_SCORES[0].equals("")) {
+			CCLabel score1 = CCLabel.makeLabel("1.  " + MainActivity.HIGH_SCORES[0], "HeadingFont.ttf", 24);
+			highScoresView(score1, screenSize.height - 80*scaleFactor);
+			scene.addChild(score1);
+		}else {
+			CCLabel score1 = CCLabel.makeLabel("1.  0", "HeadingFont.ttf", 24);
+			highScoresView(score1, screenSize.height - 80*scaleFactor);
+			scene.addChild(score1);
+		}
+		if(!MainActivity.HIGH_SCORES[1].equals("")) {
+			CCLabel score2 = CCLabel.makeLabel("2. " + MainActivity.HIGH_SCORES[1], "HeadingFont.ttf", 24);
+			highScoresView(score2, screenSize.height - 140*scaleFactor);
+			scene.addChild(score2);
+		}else {
+			CCLabel score2 = CCLabel.makeLabel("2. 0", "HeadingFont.ttf", 24);
+			highScoresView(score2, screenSize.height - 140*scaleFactor);
+			scene.addChild(score2);
+		}
+		if(!MainActivity.HIGH_SCORES[2].equals("")) {
+			CCLabel score3 = CCLabel.makeLabel("3. " + MainActivity.HIGH_SCORES[2], "HeadingFont.ttf", 24);
+			highScoresView(score3, screenSize.height - 200*scaleFactor);
+			scene.addChild(score3);
+		}else {
+			CCLabel score3 = CCLabel.makeLabel("3. 0", "HeadingFont.ttf", 24);
+			highScoresView(score3, screenSize.height - 200*scaleFactor);
+			scene.addChild(score3);
+		}
 				
 		return scene;
 	}
 	
-	public static void highScoresView(CCLabel player, CCLabel scoreLb, float posY) {
-		player.setColor(ccColor3B.ccc3(255, 0, 0));
-		player.setAnchorPoint(CGPoint.ccp(0.5f,0f));
-		player.setPosition(CGPoint.ccp(100*scaleFactor, posY));
-		
+	public static void highScoresView(CCLabel scoreLb, float posY) {		
 		scoreLb.setColor(ccColor3B.ccc3(255, 111, 0));
-		scoreLb.setAnchorPoint(CGPoint.ccp(0.5f,0f));
-		scoreLb.setPosition(CGPoint.ccp(screenSize.width/2f + 20*scaleFactor, posY));
-	}
-		
-	public static void writeScoresFile(String name, String score) throws IOException {
-		String state = Environment.getExternalStorageState();
-		Log.d("st", state);
-		if(Environment.MEDIA_MOUNTED.equals(state)) {
-			File gameDir = new File(Environment.getExternalStorageDirectory().getPath() + "/memory");
-			gameDir.mkdirs();
-			FileWriter out = new FileWriter(new File(gameDir, "highScores.txt"), true);
-
-			out.write(name + "\n");
-			out.write(score + "\n");
-			out.close();
-		}
+		scoreLb.setAnchorPoint(CGPoint.ccp(0f, 0f));
+		scoreLb.setPosition(CGPoint.ccp(screenSize.width/3f, posY));
 	}
 	
-	public static void readScoresFile() throws IOException {
+	public static void readScoresFile() {
 		String state = Environment.getExternalStorageState();
 		if(Environment.MEDIA_MOUNTED.equals(state)) {
 			File gameDir = new File(Environment.getExternalStorageDirectory().getPath() + "/memory");
@@ -283,6 +269,10 @@ public class MainMenuLayerDepth1 extends CCLayer{
 		File f = new File(Environment.getExternalStorageDirectory().getPath() + "/memory/" + "highScores.txt");
 		f.delete();
 		f.createNewFile();
+		MainActivity.HIGH_SCORES[0] = "0";
+		MainActivity.HIGH_SCORES[1] = "0";
+		MainActivity.HIGH_SCORES[2] = "0";
+		
 		CCDirector.sharedDirector().replaceScene(MainMenuLayerDepth1.highScoresScene());
 	}
 	/*< end Details of HighScores >*/
@@ -294,21 +284,21 @@ public class MainMenuLayerDepth1 extends CCLayer{
 		scene.addChild(layer);
 		
 		CCLabel name = CCLabel.makeLabel("Nguyen Van Hien", "HeadingFont.ttf", 24);
-		name.setColor(ccColor3B.ccc3(255, 111, 0));
+		name.setColor(ccColor3B.ccc3(255, 0, 0));
 		name.setAnchorPoint(CGPoint.ccp(0.5f,1f));
 		name.setPosition(CGPoint.ccp(screenSize.width/2f, screenSize.height - 20*scaleFactor));
 		scene.addChild(name);
 		
 		CCLabel id = CCLabel.makeLabel("51001042", "HeadingFont.ttf", 24);
-		id.setColor(ccColor3B.ccc3(255, 111, 0));
+		id.setColor(ccColor3B.ccc3(255, 0, 0));
 		id.setAnchorPoint(CGPoint.ccp(0.5f,1f));
-		id.setPosition(CGPoint.ccp(screenSize.width/2f, screenSize.height - 40*scaleFactor));
+		id.setPosition(CGPoint.ccp(screenSize.width/2f, screenSize.height - 80*scaleFactor));
 		scene.addChild(id);
 		
 		CCLabel email = CCLabel.makeLabel("nvhien1992@gmail.com", "HeadingFont.ttf", 24);
-		email.setColor(ccColor3B.ccc3(255, 111, 0));
+		email.setColor(ccColor3B.ccc3(255, 0, 0));
 		email.setAnchorPoint(CGPoint.ccp(0.5f,1f));
-		email.setPosition(CGPoint.ccp(screenSize.width/2f, screenSize.height - 60*scaleFactor));
+		email.setPosition(CGPoint.ccp(screenSize.width/2f, screenSize.height - 140*scaleFactor));
 		scene.addChild(email);
 		
 		scene.addChild(buttonBackMainMenu(layer, 50*scaleFactor));

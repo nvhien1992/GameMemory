@@ -31,7 +31,7 @@ public class GamePlayLayer extends CCLayer {
 	private CCLabel scores;
 	private static CGSize screenSize;
 	private CCProgressTimer progressBarBG, progressBar;
-	private CCMenu buttonStartMenu, buttonPauseMenu, buttonResumeMenu;
+	private CCMenu buttonPauseMenu, buttonResumeMenu;
 	
 	private int percentage, time_s;
 	private int checks, numOfElement, checkToWin, combo;
@@ -189,7 +189,6 @@ public class GamePlayLayer extends CCLayer {
 		checkToWin = 0;
 		combo = 0;
 		checks = 0;
-		MainActivity.SCORES = 0;
 		flagCombo = false;
 		if(MainActivity.LEVEL == 1)
 			numOfPic = 4;
@@ -251,16 +250,15 @@ public class GamePlayLayer extends CCLayer {
 		int tmp;
 		
 		/* init arrays >*/
-		for(int i = 0; i < numOfElement; i++){
+		for(int i = 0; i < numOfElement; i++) {
 			num[i] = 0;
-		}
-				
+		}	
 		for(int i = 0; i < numOfElement; i++) {
 			checked[i] = false;
 		}
 		
 		/*< random >*/
-		Random rand = new Random();
+		Random rand = new Random();		
 		while(n < numOfElement) {
 			tmp = rand.nextInt(numOfElement-1);
 			if(num[tmp] == 0) {				
@@ -315,11 +313,14 @@ public class GamePlayLayer extends CCLayer {
 		if(start) {
 			if((X > 0 && X < numOfPic*elementWidth) && (Y > (offsetHeight) && Y < (numOfPic*elementHeight))) {
 				checks++;
+				/* disable touch after the second touch*/
 				if(checks == 2)
 					this.setIsTouchEnabled(false);
 				
 				if(MainActivity.AUDIO)
 					SoundEngine.sharedEngine().playEffect(MainMenuLayer.context, R.raw.click);
+				
+				/* looking for the location of touched element*/
 				for(int i = 0; i < numOfPic; i++) {
 					if(Y < (elementHeight + (float)i*elementHeight + offsetHeight)) {
 						ROWs = i;
@@ -332,8 +333,9 @@ public class GamePlayLayer extends CCLayer {
 						break;
 					}
 				}
-								
-				if(checked[(int)numOfPic*ROWs+COLUMNs] == false) {					
+				
+				/* check the existence of the touched element(s) */
+				if(checked[(int)numOfPic*ROWs+COLUMNs] == false) {	//exist-->save the location of the touched elements to compare				
 					if(checks == 1) {
 						rowColChecked[0][0] = ROWs;
 						rowColChecked[0][1] = COLUMNs;
@@ -342,10 +344,13 @@ public class GamePlayLayer extends CCLayer {
 						rowColChecked[1][0] = ROWs;
 						rowColChecked[1][1] = COLUMNs;
 					}				
-				}else {
-					checks = 0;
+				}else { //not exist-->no compare
+					checks--;
+					this.setIsTouchEnabled(true);
 					return true;
 				}
+				
+				/* touch at one location */
 				if((rowColChecked[0][0] == rowColChecked[1][0]) && (rowColChecked[0][1] == rowColChecked[1][1])) {
 					checks = 1;
 					rowColChecked[1][0] = -2;
@@ -365,8 +370,8 @@ public class GamePlayLayer extends CCLayer {
 				anim.addFrame("coverIcon/icon7.png");
 				CCAnimate animate = CCAnimate.action(actualDuration, anim, false);
 				CCCallFuncN removeIcon = CCCallFuncN.action(this, "removeIcon");
-
-				if(checks == 2) {
+				
+				if(checks == 2) { // will compare two touched elements
 					checks = 0;
 					CCCallFuncN checkElement = CCCallFuncN.action(this, "checkElement");
 					CCSequence actions = CCSequence.actions(animate, removeIcon, checkElement);
@@ -399,12 +404,8 @@ public class GamePlayLayer extends CCLayer {
 			
 			if(flagCombo) {
 				combo++;
-				for(int i = 3; i < numOfElement/2; i++) {
-					if(combo == i) {
-						MainActivity.SCORES += 10*combo;
-
-					}
-				}
+				if(combo >= 3)
+					MainActivity.SCORES += 10*combo;
 			}
 			checked[(int)numOfPic*row1 + col1] = true;
 			checked[(int)numOfPic*row2 + col2] = true;
@@ -425,15 +426,20 @@ public class GamePlayLayer extends CCLayer {
 			flagCombo = true;
 			checkToWin += 2;
 			if(checkToWin == numOfElement) {
+				if(combo >= 2)
+					MainActivity.SCORES += 10*(combo++);
+				MainActivity.SCORES += 100 - percentage;
 				MainActivity.LEVEL++;
 				this.setIsTouchEnabled(true);
-				if(MainActivity.LEVEL > 3) {
+				if(MainActivity.LEVEL > 2) {
+					MainActivity.LEVEL = 1;
 					MainActivity.WIN = true;
 					CCScene scene = GameOverLayer.scene();
 					CCDirector.sharedDirector().replaceScene(scene);
+				}else {
+					CCScene scene = GamePlayLayer.scene();
+					CCDirector.sharedDirector().replaceScene(scene); 
 				}
-				CCScene scene = GamePlayLayer.scene();
-				CCDirector.sharedDirector().replaceScene(scene);
 			}
 		}else {
 			flagCombo = false;
@@ -471,7 +477,6 @@ public class GamePlayLayer extends CCLayer {
 			
 			if(percentage == 100) {
 				MainActivity.WIN = false;
-				MainActivity.LEVEL = 1;
 				percentage = 0;
 				CCScene scene = GameOverLayer.scene();
 				CCDirector.sharedDirector().replaceScene(scene);

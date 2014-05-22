@@ -1,5 +1,9 @@
 package dhbk.android.gameassignment;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import org.cocos2d.layers.CCLayer;
@@ -13,6 +17,7 @@ import org.cocos2d.types.CGPoint;
 import org.cocos2d.types.CGSize;
 
 import android.content.Context;
+import android.os.Environment;
 import android.view.KeyEvent;
 
 public class MainMenuLayer extends CCLayer {
@@ -109,19 +114,16 @@ public class MainMenuLayer extends CCLayer {
 	
 	@Override
 	public boolean ccKeyDown(int keyCode, KeyEvent event) {
+		SoundEngine.sharedEngine().pauseSound();
 		if(keyCode == KeyEvent.KEYCODE_BACK) {
-			SoundEngine.sharedEngine().pauseSound();
 			CCDirector.sharedDirector().end();			
 		}
-		if(keyCode == KeyEvent.KEYCODE_HOME)
-			SoundEngine.sharedEngine().pauseSound();
 	    return super.ccKeyDown(keyCode, event);
 	}
 	
 	public void buttonPlayCallBack(Object sender) {
 		if(MainActivity.AUDIO)
 			SoundEngine.sharedEngine().playEffect(context, R.raw.click);
-//		addChild(buttonPlay2);
 		CCScene scene = GamePlayLayer.scene();
 		CCDirector.sharedDirector().runWithScene(scene);
 	}
@@ -154,4 +156,28 @@ public class MainMenuLayer extends CCLayer {
 		
 		return scene;
 	}
+	
+	public static void readScoresFile() throws IOException {
+		String state = Environment.getExternalStorageState();
+		if(Environment.MEDIA_MOUNTED.equals(state)) {
+			File gameDir = new File(Environment.getExternalStorageDirectory().getPath() + "/memory");
+			gameDir.mkdirs();
+			BufferedReader in = null;
+			String line;
+			try {
+				int i = 0;
+				in = new BufferedReader(new FileReader(new File(gameDir, "highScores.txt")));
+				while((line = in.readLine()) != null) {
+					MainActivity.HIGH_SCORES[i] = line;
+					i++;
+				}
+				in.close();
+			}catch(FileNotFoundException e) {
+				
+			}catch(IOException e) {
+				
+			}
+		}
+	}
+	
 }
